@@ -16,7 +16,8 @@ export const generateScriptRequestSchema = z.object({
     'Entertainment'
   ], {
     errorMap: () => ({ message: 'Style must be Educational, Storytelling, Motivational, or Entertainment' })
-  }).default('Educational')
+  }).default('Educational'),
+  isHinglish: z.boolean().default(false)
 });
 
 export const sceneSchema = z.object({
@@ -52,7 +53,16 @@ export const generateReelSchema = z.object({
     'Motivational',
     'Entertainment'
   ]).default('Educational'),
-  count: z.coerce.number().min(1).max(5).default(1)
+  mode: z.enum(['STOCK', 'AI_GENERATED', 'HYBRID']).default('STOCK'),
+  visualStyle: z.string().default('Cinematic'),
+  isHinglish: z.boolean().default(false),
+  subtitleStyle: z.enum([
+    'Bold Pop Yellow',
+    'Classic Minimalist White',
+    'Cyber Neon Green',
+    'Boxed Caption'
+  ]).default('Bold Pop Yellow'),
+  script: scriptOutputSchema.optional()
 });
 
 export const validateRequest = (schema) => (req, res, next) => {

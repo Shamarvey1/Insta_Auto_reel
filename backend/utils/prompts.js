@@ -44,3 +44,4 @@ Structure the JSON exactly as follows:
 
 Ensure the sum of all scene durations is approximately ${duration} seconds. Provide enough scenes (typically 3 scenes for 15s, 5-6 scenes for 30s, 8-10 scenes for 60s).`;
 };
+
