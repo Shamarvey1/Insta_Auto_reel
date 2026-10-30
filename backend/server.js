@@ -36,7 +36,7 @@ app.use(errorHandler);
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, HOST, () => {
-    console.log(`🚀 Auto-Reel Agent Server running on http://${HOST}:${PORT}`);
+    console.log(`Auto-Reel Agent Server running on http://${HOST}:${PORT}`);
   });
 }
 
