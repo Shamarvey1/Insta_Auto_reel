@@ -1,12 +1,12 @@
 {
   "name": "auto-reel-backend",
   "version": "1.0.0",
-  "description": "Instagram Auto-Reel Agent Backend with LangGraph and Groq",
-  "main": "server.js",
+  "description": "Instagram Auto-Reel Agent Backend — Local-First, AI-Only",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",

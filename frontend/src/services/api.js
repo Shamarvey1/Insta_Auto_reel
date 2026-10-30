@@ -5,7 +5,7 @@ const FALLBACK_URL = 'http://127.0.0.1:5000/api';
 
 const client = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 120000
+  timeout: 30000
 });
 
 export const checkHealth = async () => {
@@ -22,55 +22,52 @@ export const checkHealth = async () => {
   }
 };
 
-export const generateScript = async (params) => {
+export const fetchProvidersStatus = async () => {
   try {
-    const res = await client.post('/reels/generate-script', params);
-    return res.data;
-  } catch (err) {
-    try {
-      const fallbackRes = await axios.post(`${FALLBACK_URL}/reels/generate-script`, params, { timeout: 45000 });
-      return fallbackRes.data;
-    } catch (fallbackErr) {
-      const message = fallbackErr.response?.data?.error || fallbackErr.response?.data?.message || err.response?.data?.error || err.message || 'Script generation failed';
-      const details = fallbackErr.response?.data?.details || err.response?.data?.details || null;
-      const customError = new Error(message);
-      customError.details = details;
-      customError.status = fallbackErr.response?.status || err.response?.status;
-      throw customError;
-    }
+    const res = await client.get('/media/providers/status');
+    return res.data?.data || null;
+  } catch {
+    return null;
   }
 };
 
-export const generateReelVideo = async (params) => {
+export const createReel = async (params) => {
   try {
-    const res = await client.post('/reels/generate', params, { timeout: 180000 });
+    const res = await client.post('/reels/generate', params);
     return res.data;
   } catch (err) {
-    try {
-      const fallbackRes = await axios.post(`${FALLBACK_URL}/reels/generate`, params, { timeout: 180000 });
-      return fallbackRes.data;
-    } catch (fallbackErr) {
-      const message = fallbackErr.response?.data?.error || fallbackErr.response?.data?.message || err.response?.data?.error || err.message || 'Video generation failed';
-      const details = fallbackErr.response?.data?.details || err.response?.data?.details || null;
-      const customError = new Error(message);
-      customError.details = details;
-      customError.status = fallbackErr.response?.status || err.response?.status;
-      throw customError;
-    }
+    const message = err.response?.data?.error || err.message || 'Failed to create reel';
+    const details = err.response?.data?.details || null;
+    const customError = new Error(message);
+    customError.details = details;
+    throw customError;
   }
 };
 
-export const fetchAllReels = async () => {
+export const fetchReels = async () => {
   try {
     const res = await client.get('/reels');
-    return res.data?.reels || [];
-  } catch (err) {
-    try {
-      const fallbackRes = await axios.get(`${FALLBACK_URL}/reels`);
-      return fallbackRes.data?.reels || [];
-    } catch {
-      return [];
-    }
+    return res.data?.data || [];
+  } catch {
+    return [];
+  }
+};
+
+export const fetchReelById = async (id) => {
+  try {
+    const res = await client.get(`/reels/${id}`);
+    return res.data?.data || null;
+  } catch {
+    return null;
+  }
+};
+
+export const fetchJobStatus = async (jobId) => {
+  try {
+    const res = await client.get(`/jobs/${jobId}`);
+    return res.data?.data || null;
+  } catch {
+    return null;
   }
 };
 
