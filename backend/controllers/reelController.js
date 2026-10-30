@@ -1,11 +1,26 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { generateReelScript } from '../services/scriptService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export const reelsStore = new Map();
+
+export const generateScriptOnly = async (req, res, next) => {
+  try {
+    const { topic, duration, language, style } = req.validatedBody;
+    const script = await generateReelScript({ topic, duration, language, style });
+
+    res.json({
+      success: true,
+      data: script
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const generateReel = async (req, res, next) => {
   try {
@@ -38,26 +53,6 @@ export const generateReel = async (req, res, next) => {
       message: 'Reel generation job initiated',
       reelId,
       status: 'queued'
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const generateScriptOnly = async (req, res, next) => {
-  try {
-    const { topic, duration, language, style, selectedIdea } = req.validatedBody;
-    
-    res.json({
-      success: true,
-      message: 'Script generation endpoint ready',
-      data: {
-        topic,
-        duration,
-        language,
-        style,
-        selectedIdea
-      }
     });
   } catch (error) {
     next(error);
