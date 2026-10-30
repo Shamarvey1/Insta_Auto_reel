@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 export const reelsStore = new Map();
 
-const buildFallbackScript = ({ topic, duration, language, style }) => {
+const buildFallbackScript = ({ topic, duration, language = 'Hinglish', style = 'Educational' }) => {
   const sceneCount = duration === 15 ? 3 : duration === 60 ? 8 : 4;
   const sceneDuration = Math.round(duration / sceneCount);
 
@@ -21,35 +21,35 @@ const buildFallbackScript = ({ topic, duration, language, style }) => {
     language,
     style,
     targetDuration: duration,
-    hook: `Have you ever wondered about ${topic}?`,
+    hook: `Kya aapko pata hai ${topic} ke baare mein yeh unbelievable fact?`,
     scenes: Array.from({ length: sceneCount }, (_, i) => ({
       sceneNumber: i + 1,
       duration: sceneDuration,
-      narration: `Here is key insight number ${i + 1} regarding ${topic}. Pay close attention to this detail.`,
-      visualDescription: `Cinematic visual illustrating ${topic} with dynamic motion.`,
-      subtitle: `Key Fact ${i + 1} about ${topic}`,
-      searchKeywords: [topic.split(' ')[0] || 'nature', 'cinematic']
+      narration: `Dosto, fact number ${i + 1}: ${topic} ke bare mein yeh baat bohot kam log jaante hain. Dhyaan se suniye.`,
+      visualDescription: `Cinematic vertical video of ${topic} with dynamic aesthetic motion.`,
+      subtitle: `Fact ${i + 1}: ${topic}`,
+      searchKeywords: [topic.split(' ')[0] || 'space', 'cinematic']
     })),
-    ending: `That is why ${topic} is so fascinating.`,
-    callToAction: 'Follow for more incredible insights!'
+    ending: `Toh yeh tha ${topic} ka sabse hairan karne wala sach.`,
+    callToAction: 'Aise hi mind-blowing facts ke liye abhi follow karein!'
   };
 };
 
 export const generateScriptOnly = async (req, res, next) => {
   try {
     const { topic, duration, language, style, isHinglish } = req.validatedBody;
-    const effectiveLanguage = isHinglish ? 'Hinglish' : language;
+    const effectiveLanguage = isHinglish || language === 'Hinglish' ? 'Hinglish' : language;
 
     try {
       const script = await generateReelScript({ topic, duration, language: effectiveLanguage, style });
       return res.json({ success: true, data: script });
     } catch (scriptErr) {
-      if (scriptErr.statusCode === 401 && !process.env.ANTHROPIC_API_KEY) {
+      if (scriptErr.statusCode === 401 && !process.env.GROQ_API_KEY) {
         const fallback = buildFallbackScript({ topic, duration, language: effectiveLanguage, style });
         return res.json({
           success: true,
           data: fallback,
-          note: 'Generated with fallback schema template (Add ANTHROPIC_API_KEY in backend/.env for live Claude model).'
+          note: 'Generated with fallback schema template (Configure GROQ_API_KEY in backend/.env for live Groq LPU inference).'
         });
       }
       throw scriptErr;
@@ -74,7 +74,7 @@ export const generateReel = async (req, res, next) => {
     } = req.validatedBody;
 
     const reelId = `reel_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
-    const effectiveLanguage = isHinglish ? 'Hinglish' : language;
+    const effectiveLanguage = isHinglish || language === 'Hinglish' ? 'Hinglish' : language;
 
     let finalScript = passedScript;
     if (!finalScript) {
@@ -86,7 +86,7 @@ export const generateReel = async (req, res, next) => {
           style
         });
       } catch (err) {
-        if (!process.env.ANTHROPIC_API_KEY || err.statusCode === 401) {
+        if (!process.env.GROQ_API_KEY || err.statusCode === 401) {
           finalScript = buildFallbackScript({
             topic,
             duration,

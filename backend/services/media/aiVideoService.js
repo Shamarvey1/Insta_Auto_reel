@@ -115,3 +115,4 @@ export const generateAIVideoClip = async ({ prompt, duration, targetPath }) => {
   const provider = getAIVideoProvider();
   return await provider.generateClip({ prompt, duration, targetPath });
 };
+

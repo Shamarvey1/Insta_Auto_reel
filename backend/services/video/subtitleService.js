@@ -98,3 +98,4 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
   fs.writeFileSync(outputPath, fullContent, 'utf-8');
   return { subtitlePath: outputPath, totalDuration: currentTime };
 };
+

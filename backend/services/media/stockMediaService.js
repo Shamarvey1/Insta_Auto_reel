@@ -99,3 +99,4 @@ export const fetchStockFootageForScene = async ({ keywords = [], duration = 5, t
     return await synthesizeVerticalFootage({ duration, targetPath, sceneNumber });
   }
 };
+

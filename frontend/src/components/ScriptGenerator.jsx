@@ -15,13 +15,13 @@ import {
   Eye,
   Volume2,
   Subtitles,
-  KeyRound
+  ZapOff
 } from 'lucide-react';
 
 export default function ScriptGenerator() {
   const [topic, setTopic] = useState('');
   const [duration, setDuration] = useState(30);
-  const [language, setLanguage] = useState('English');
+  const [language, setLanguage] = useState('Hinglish');
   const [style, setStyle] = useState('Educational');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -30,9 +30,9 @@ export default function ScriptGenerator() {
 
   const sampleTopics = [
     'Facts about Black Holes that will blow your mind',
-    '3 Psychological habits of hyper-productive people',
+    '3 Habits that double your brain productivity',
     'Why airplanes don\'t fly in straight lines',
-    'The mystery behind the deepest place on Earth'
+    'Deep ocean ke aise raaz jo scientists ko darate hain'
   ];
 
   const handleSubmit = async (e) => {
@@ -50,7 +50,8 @@ export default function ScriptGenerator() {
         topic: topic.trim(),
         duration: Number(duration),
         language,
-        style
+        style,
+        isHinglish: language === 'Hinglish'
       });
 
       if (response.success && response.data) {
@@ -88,19 +89,19 @@ export default function ScriptGenerator() {
           <div className="flex items-start justify-between gap-4 pb-6 border-b border-slate-800/80">
             <div>
               <div className="flex items-center gap-2">
-                <span className="p-2 rounded-xl bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                <span className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
                   <Sparkles className="w-5 h-5" />
                 </span>
                 <h3 className="text-xl font-bold text-white tracking-tight">
-                  Claude AI Script Studio
+                  Groq LPU Script Studio
                 </h3>
               </div>
               <p className="text-sm text-slate-400 mt-1">
-                Generate high-retention, scene-by-scene Reel scripts powered by Anthropic Claude.
+                Ultra-fast, high-retention Hinglish & English script generation powered by Groq.
               </p>
             </div>
-            <span className="text-[11px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-              Milestone 2
+            <span className="text-[11px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">
+              Groq Powered
             </span>
           </div>
 
@@ -112,9 +113,9 @@ export default function ScriptGenerator() {
               <textarea
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                placeholder="e.g., What happens if you fall into a supermassive black hole?"
+                placeholder="e.g., Space ke aise facts jo aapko raat ko sone nahi denge"
                 rows={3}
-                className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 focus:border-fuchsia-500 transition resize-none"
+                className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition resize-none"
               />
 
               <div className="mt-2.5 flex flex-wrap items-center gap-2">
@@ -124,9 +125,9 @@ export default function ScriptGenerator() {
                     key={idx}
                     type="button"
                     onClick={() => setTopic(sample)}
-                    className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/50 transition"
+                    className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/60 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/50 transition cursor-pointer"
                   >
-                    {sample.length > 32 ? sample.substring(0, 32) + '...' : sample}
+                    {sample.length > 35 ? sample.substring(0, 35) + '...' : sample}
                   </button>
                 ))}
               </div>
@@ -144,9 +145,9 @@ export default function ScriptGenerator() {
                       key={sec}
                       type="button"
                       onClick={() => setDuration(sec)}
-                      className={`py-2.5 text-xs font-bold rounded-xl border transition ${
+                      className={`py-2.5 text-xs font-bold rounded-xl border transition cursor-pointer ${
                         duration === sec
-                          ? 'bg-fuchsia-500/20 border-fuchsia-500 text-fuchsia-300 shadow-sm shadow-fuchsia-500/20'
+                          ? 'bg-amber-500/20 border-amber-500 text-amber-300 shadow-sm shadow-amber-500/20'
                           : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
                       }`}
                     >
@@ -164,7 +165,7 @@ export default function ScriptGenerator() {
                 <select
                   value={style}
                   onChange={(e) => setStyle(e.target.value)}
-                  className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 focus:border-fuchsia-500 transition"
+                  className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition"
                 >
                   <option value="Educational">Educational</option>
                   <option value="Storytelling">Storytelling</option>
@@ -181,8 +182,9 @@ export default function ScriptGenerator() {
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500/50 focus:border-fuchsia-500 transition"
+                  className="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition"
                 >
+                  <option value="Hinglish">Hinglish (Hindi + English)</option>
                   <option value="English">English</option>
                   <option value="Hindi">Hindi</option>
                   <option value="Spanish">Spanish</option>
@@ -198,15 +200,18 @@ export default function ScriptGenerator() {
                   <AlertCircle className="w-5 h-5 text-rose-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-sm font-semibold text-rose-200">
-                      {error.status === 401 ? 'Anthropic API Key Required' : 'Script Generation Error'}
+                      {error.status === 401 ? 'Groq API Key Required' : 'Script Generation Error'}
                     </h4>
                     <p className="text-xs text-rose-300 mt-0.5">{error.message}</p>
                     {error.status === 401 && (
                       <div className="mt-2 text-xs bg-slate-950/60 p-2.5 rounded-lg border border-rose-500/20 text-slate-300">
-                        <span className="text-rose-400 font-semibold">How to fix:</span> Open{' '}
-                        <code className="text-fuchsia-400">backend/.env</code> and add your key:
+                        <span className="text-rose-400 font-semibold">How to fix:</span> Get a free key at{' '}
+                        <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer" className="text-amber-400 underline">
+                          console.groq.com/keys
+                        </a>{' '}
+                        and set in <code className="text-amber-400">backend/.env</code>:
                         <pre className="mt-1 font-mono text-[11px] text-slate-200">
-                          ANTHROPIC_API_KEY=sk-ant-api03-...
+                          GROQ_API_KEY=gsk_...
                         </pre>
                       </div>
                     )}
@@ -229,17 +234,17 @@ export default function ScriptGenerator() {
             <button
               type="submit"
               disabled={loading || !topic.trim()}
-              className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-fuchsia-600 to-rose-600 hover:from-fuchsia-500 hover:to-rose-500 text-white shadow-lg shadow-fuchsia-600/20 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 to-rose-600 hover:opacity-95 text-white shadow-lg shadow-amber-500/20 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
             >
               {loading ? (
                 <>
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                  <span>Claude is crafting viral script & scenes...</span>
+                  <span>Groq LPU is generating viral script & scenes...</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Generate Reel Script</span>
+                  <span>Generate Script with Groq</span>
                 </>
               )}
             </button>
@@ -251,7 +256,7 @@ export default function ScriptGenerator() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs uppercase font-bold px-2 py-0.5 rounded-full bg-fuchsia-500/10 text-fuchsia-400 border border-fuchsia-500/20">
+                  <span className="text-xs uppercase font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
                     {scriptData.style}
                   </span>
                   <span className="text-xs uppercase font-bold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
@@ -269,14 +274,14 @@ export default function ScriptGenerator() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleCopy}
-                  className="px-3 py-2 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5"
+                  className="px-3 py-2 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5 cursor-pointer"
                 >
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   {copied ? 'Copied' : 'Copy JSON'}
                 </button>
                 <button
                   onClick={handleReset}
-                  className="px-3 py-2 rounded-xl border border-fuchsia-500/30 bg-fuchsia-500/10 hover:bg-fuchsia-500/20 text-xs font-semibold text-fuchsia-300 transition flex items-center gap-1.5"
+                  className="px-3 py-2 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-xs font-semibold text-amber-300 transition flex items-center gap-1.5 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   New Script
@@ -387,7 +392,7 @@ export default function ScriptGenerator() {
               <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                 Call to Action
               </div>
-              <p className="text-sm text-fuchsia-300 mt-1 font-semibold">{scriptData.callToAction}</p>
+              <p className="text-sm text-amber-300 mt-1 font-semibold">{scriptData.callToAction}</p>
             </div>
           </div>
         </div>
@@ -395,4 +400,3 @@ export default function ScriptGenerator() {
     </div>
   );
 }
-
